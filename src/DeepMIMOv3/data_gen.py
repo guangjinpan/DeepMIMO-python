@@ -1,6 +1,5 @@
-import sys
-sys.path.append("../src/")
 import DeepMIMOv3 as DeepMIMO
+import sys
 
 import numpy as np
 from pprint import pprint
@@ -14,13 +13,13 @@ parameters = DeepMIMO.default_params()
 parameters['scenario'] = 'O1_3p5'
 
 # Set the main folder containing extracted scenarios
-parameters['dataset_folder'] = r'../../DeepMIMO_scenarios'
+parameters['dataset_folder'] = r'../../../DeepMIMO_scenarios'
 
 
 parameters['num_paths'] = 5
 
 # User rows 1-100
-parameters['user_rows'] = [900]
+parameters['user_rows'] = [800]
 parameters['user_row_first'] = 1
 parameters['user_row_last'] = 1
 
@@ -33,15 +32,15 @@ parameters['OFDM']['subcarriers'] = 64 # OFDM with 100 subcarriers
 parameters['OFDM']['subcarriers_limit'] = 64 # Keep only first 64 subcarriers
 parameters['OFDM']['selected_subcarriers'] = np.arange(64) # Keep only first 64 subcarriers
 
-parameters['ue_antenna']['shape'] = np.array([1, 1]) # Single antenna
-parameters['bs_antenna']['shape'] = np.array([32, 1]) # ULA of 32 elements
+parameters['ue_antenna']['shape'] = np.array([1, 1, 1]) # Single antenna
+parameters['bs_antenna']['shape'] = np.array([1, 32, 1]) # ULA of 32 elements
 parameters['enable_BS2B'] = 0
 parameters['bs_antenna']['rotation'] = np.array([0, 0, 0])
-# pprint(parameters)
+pprint(parameters)
 
 # Generate data
 dataset = DeepMIMO.generate_data(parameters)
-useridx=80
+useridx=60
 
 # print(len(dataset[0]['user']['channel']))
 
@@ -60,4 +59,4 @@ plt.plot(x[1:]-x[0])
 print("angle,", dataset[0]['user']['paths'][useridx])
 print(dataset[0]['basestation'].keys(),dataset[0]['basestation']['location'][0],dataset[0]['user']['LoS'][useridx])
 print("loc", dataset[0]['basestation']['location'][0][:2],dataset[0]['user']['location'][useridx][:2] ,music.calculate_distance_and_aoa(dataset[0]['basestation']['location'][0][:2],dataset[0]['user']['location'][useridx][:2]))
-print(dataset[0]['user']['paths'][useridx]["DoD_theta"][0],music.music_f(channel[0,:,:].transpose(),dataset[0]['user']['paths'][useridx]["DoD_theta"][0]* np.pi/180,))
+print(music.music_f(channel[0,:,:].transpose()))
